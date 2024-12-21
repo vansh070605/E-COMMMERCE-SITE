@@ -43,3 +43,105 @@
     color: orange;
     transition: 200ms;
 }
+
+/* Navbar Styles */
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    color: orange !important;
+    font-family: 'Arial Black', sans-serif;
+}
+
+.nav-link {
+    color: #6c757d !important;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #ff9900 !important;
+}
+
+.navbar-toggler {
+    border: none;
+    background-color: orange;
+}
+
+/* Search Bar */
+form.d-flex input[type="search"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form.d-flex button {
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+}
+
+form.d-flex button:hover {
+    background-color: #e68a00;
+}
+
+/* Flash Messages */
+.alert {
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+    background-color: #ff9900;
+    font-size: 1rem;
+    color: white;
+    padding: 15px 0;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+footer a:hover {
+    color: #e6e6e6;
+}
+
+/* Body */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: rgb(124, 14, 151);
+    margin: 0;
+    padding: 0;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    border: none;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu a {
+    color: #333 !important;
+    font-size: 16px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #ff9900;
+    color: white !important;
+}
+
+/* Badge */
+.badge {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
