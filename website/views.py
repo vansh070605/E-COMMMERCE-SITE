@@ -141,27 +141,20 @@ def remove_cart():
 @views.route('/place-order')
 @login_required
 def place_order():
-    customer_cart = Cart.query.filter_by(customer_link=current_user.id)
-    if customer_cart.count() > 0:  # Change this to check if there are any cart items
+    customer_cart = Cart.query.filter_by(customer_link=current_user.id).all()
+    if customer_cart:  # Check if the cart is not empty
         try:
             total = 0
             for item in customer_cart:
                 total += item.product.current_price * item.quantity
 
-            service = APIService(token=API_TOKEN, publishable_key=API_PUBLISHABLE_KEY, test=True)
-            create_order_response = service.collect.mpesa_stk_push(
-                phone_number='8810223022', email=current_user.email,
-                amount=total + 200, narrative='Purchase of goods'
-            )
-
-            print(create_order_response)  # Print the response for debugging
-
+            # Process the order without the API service
             for item in customer_cart:
                 new_order = Order()
                 new_order.quantity = item.quantity
                 new_order.price = item.product.current_price
-                new_order.status = create_order_response['invoice']['state'].capitalize()
-                new_order.payment_id = create_order_response['id']
+                new_order.status = 'Pending'  # Order status
+                new_order.payment_id = 'N/A'  # No payment integration, so set a placeholder value
 
                 new_order.product_link = item.product_link
                 new_order.customer_link = item.customer_link
@@ -170,9 +163,9 @@ def place_order():
 
                 product = Product.query.get(item.product_link)
                 product.in_stock -= item.quantity
-                db.session.delete(item)
+                db.session.delete(item)  # Remove the item from the cart
 
-            db.session.commit()  # Commit everything together after the loop
+            db.session.commit()  # Commit all changes
 
             flash('Order Placed Successfully', 'success')
             return redirect('/orders')
@@ -183,12 +176,74 @@ def place_order():
             return redirect('/')
 
     else:
-        flash('Your cart is Empty', 'warning')
+        flash('Your cart is empty', 'warning')
         return redirect('/')
+
 
 
 @views.route('/orders')
 @login_required
 def order():
-    orders = Order.query.filter_by(customer_link=current_user.id).all()  # Corrected to use 'Order'
+    if current_user.is_admin:
+        # If the user is admin, show pending orders (orders that are not approved yet)
+        orders = Order.query.filter_by(is_approved=False).all()
+        return render_template('pending_orders.html', orders=orders)
+
+    # If the user is not an admin, show their own orders
+    orders = Order.query.filter_by(customer_link=current_user.id).all()
     return render_template('orders.html', orders=orders)
+
+
+
+@views.route('/admin/orders')
+@login_required
+def admin_orders():
+    if not current_user.is_admin:
+        flash('Access denied', 'danger')
+        return redirect('/')
+
+    # Get orders that are pending approval
+    orders = Order.query.filter_by(is_approved=False).all()
+    return render_template('admin_orders.html', orders=orders)
+
+
+
+@views.route('/admin/approve-order/<int:order_id>', methods=['GET', 'POST'])
+@login_required
+def approve_order(order_id):
+    if not current_user.is_admin:
+        flash('Access denied', 'danger')
+        return redirect('/')
+
+    order = Order.query.get(order_id)
+    if not order:
+        flash('Order not found', 'danger')
+        return redirect('/orders')
+
+    if request.method == 'POST':
+        try:
+            order.is_approved = True
+            order.status = 'Approved'
+            db.session.commit()
+
+            flash('Order has been approved!', 'success')
+            return redirect('/admin/orders')
+        except Exception as e:
+            print(f"Error approving order: {e}")
+            flash('Error approving order.', 'danger')
+
+    # Render confirmation page for GET request
+    return render_template('approve_order_confirmation.html', order=order)
+
+
+
+
+@views.route('/pending-orders')
+@login_required
+def pending_orders():
+    if not current_user.is_admin:
+        flash('Access denied', 'danger')
+        return redirect('/')
+
+    orders = Order.query.filter_by(is_approved=False).all()  # Get all pending orders
+    return render_template('pending_orders.html', orders=orders)
