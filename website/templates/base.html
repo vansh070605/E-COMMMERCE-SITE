@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/orders.css') }}">
 
     <title>Amazon | {% block title %} {% endblock %}</title>
 </head>
@@ -86,15 +87,22 @@
 
             
               {% if current_user.is_authenticated %}
-              <li><a class="dropdown-item" href="/profile/{{ current_user.id }}">Profile <i class="fa-solid fa-user"></i></a></li>
-              <li><a class="dropdown-item" href="/orders">Orders <i class="fa-solid fa-truck-fast"></i></a></li>
-              <li><a class="dropdown-item" href="/logout">Log Out <i class="fa-solid fa-right-from-bracket"></i></a></li>
-
-              {% else %}
-              
-              <li><a class="dropdown-item" href="/login">Login <i class="fa-solid fa-right-to-bracket"></i></a></li>
-
+                <li><a class="dropdown-item" href="/profile/{{ current_user.id }}">Profile <i class="fa-solid fa-user"></i></a></li>
+    
+              {% if current_user.is_admin %}
+                <!-- Admin's Orders Link (to view pending orders) -->
+                <li><a class="dropdown-item" href="/orders">Pending Orders <i class="fa-solid fa-truck-fast"></i></a></li>
+                {% else %}
+                <!-- Customer's Orders Link -->
+                <li><a class="dropdown-item" href="/orders">Orders <i class="fa-solid fa-truck-fast"></i></a></li>
               {% endif %}
+    
+                <li><a class="dropdown-item" href="/logout">Log Out <i class="fa-solid fa-right-from-bracket"></i></a></li>
+
+                {% else %}
+                <li><a class="dropdown-item" href="/login">Login <i class="fa-solid fa-right-to-bracket"></i></a></li>
+              {% endif %}
+
 
             </ul>
 
