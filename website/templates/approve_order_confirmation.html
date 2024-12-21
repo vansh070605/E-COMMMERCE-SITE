@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>Approve Order #{{ order.id }}</h2>
+    <p><strong>Customer:</strong> {{ order.customer.name }}</p>
+    <p><strong>Product:</strong> {{ order.product.name }}</p>
+    <p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+
+    <form action="{{ url_for('approve_order', order_id=order.id) }}" method="POST">
+      <div class="alert alert-warning" role="alert">
+        Are you sure you want to approve this order?
+      </div>
+      
+      <button type="submit" class="btn btn-success">Yes, Approve Order</button>
+      <a href="{{ url_for('admin_orders') }}" class="btn btn-danger">Cancel</a>
+    </form>
+  </div>
+{% endblock %}
