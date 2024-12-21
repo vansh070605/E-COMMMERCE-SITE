@@ -1,0 +1,31 @@
+<h1>Pending Orders</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.customer.username }}</td>
+            <td>{{ order.product.product_name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('views.approve_order', order_id=order.id) }}">
+                    <button type="submit" class="btn btn-success">Approve</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
