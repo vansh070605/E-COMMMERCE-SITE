@@ -1,6 +1,9 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_migrate import Migrate
+
+
 
 
 db = SQLAlchemy()
@@ -18,6 +21,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     @app.errorhandler(404)
     def page_not_found(error):
