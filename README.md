@@ -76,16 +76,25 @@ This project is a feature-rich e-commerce platform built using Flask for the bac
 ## Project Structure
 ```
 |-- ecommerce-website/
+    |-- media/
+        | -- all the images
+    |-- venv/
+        | -- virtual environment
     |-- website/
-        |-- static/         # Static files (CSS, JS, images)
-        |-- templates/      # HTML templates
-        |-- __init__.py     # Flask application setup
-        |-- models.py       # Database models
-        |-- routes.py       # Application routes
-        |-- config.py       # Configuration settings
-    |-- venv/               # Virtual environment (optional)
-    |-- requirements.txt    # Python dependencies
-    |-- README.md           # Project documentation
+        |-- static/
+        |-- templates/
+        |-- __init__.py
+        |-- admin.py
+        |-- auth.py
+        |-- config.py
+        |-- forms.py
+        |-- models.py
+        |-- test.py
+        |-- views.py
+    |-- main.py
+    |-- venv/
+    |-- requirements.txt
+    |-- README.md
 ```
 
 ## Technologies Used
@@ -97,8 +106,6 @@ This project is a feature-rich e-commerce platform built using Flask for the bac
   - Jinja2 template engine
 - **Database**:
   - SQLite (or other relational databases)
-- **Payment Gateway**:
-  - IntaSend API for MPESA integration
 
 ## Known Issues
 - Ensure valid API keys are provided for payment integration.
