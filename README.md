@@ -82,7 +82,9 @@ This project is a feature-rich e-commerce platform built using Flask for the bac
         | -- virtual environment
     |-- website/
         |-- static/
+            | -- all the css files
         |-- templates/
+            | -- all the html files
         |-- __init__.py
         |-- admin.py
         |-- auth.py
