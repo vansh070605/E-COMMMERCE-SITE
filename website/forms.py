@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, FloatField, PasswordField, EmailField, BooleanField, SubmitField, SelectField
-from wtforms.validators import DataRequired, Length, NumberRange
+from wtforms.validators import DataRequired, Length, NumberRange, EqualTo, Email
 from flask_wtf.file import FileField, FileRequired
 
 
@@ -8,7 +8,8 @@ class SignUpForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired(), Length(min=2)])
     password1 = PasswordField('Enter Your Password', validators=[DataRequired(), Length(min=6)])
-    password2 = PasswordField('Confirm Your Password', validators=[DataRequired(), Length(min=6)])
+    password2 = PasswordField('Confirm Your Password', validators=[DataRequired(), EqualTo('password1')])
+    otp = StringField('OTP', validators=[DataRequired()])
     submit = SubmitField('Sign Up')
 
 
